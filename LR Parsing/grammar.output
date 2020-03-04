@@ -1,0 +1,197 @@
+Terminals unused in grammar
+
+   T_DIV
+
+
+Grammar
+
+    0 $accept: expr $end
+
+    1 expr: expr T_ADD term
+    2     | term
+
+    3 term: term T_MUL fact
+    4     | fact
+
+    5 fact: T_NUM
+    6     | T_ID
+    7     | '(' expr ')'
+    8     | T_SUB fact
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 7
+')' (41) 7
+error (256)
+T_ID (258) 6
+T_NUM (259) 5
+T_ADD (260) 1
+T_SUB (261) 8
+T_MUL (262) 3
+T_DIV (263)
+
+
+Nonterminals, with rules where they appear
+
+$accept (11)
+    on left: 0
+expr (12)
+    on left: 1 2, on right: 0 1 7
+term (13)
+    on left: 3 4, on right: 1 2 3
+fact (14)
+    on left: 5 6 7 8, on right: 3 4 8
+
+
+State 0
+
+    0 $accept: . expr $end
+
+    T_ID   shift, and go to state 1
+    T_NUM  shift, and go to state 2
+    T_SUB  shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 5
+    term  go to state 6
+    fact  go to state 7
+
+
+State 1
+
+    6 fact: T_ID .
+
+    $default  reduce using rule 6 (fact)
+
+
+State 2
+
+    5 fact: T_NUM .
+
+    $default  reduce using rule 5 (fact)
+
+
+State 3
+
+    8 fact: T_SUB . fact
+
+    T_ID   shift, and go to state 1
+    T_NUM  shift, and go to state 2
+    T_SUB  shift, and go to state 3
+    '('    shift, and go to state 4
+
+    fact  go to state 8
+
+
+State 4
+
+    7 fact: '(' . expr ')'
+
+    T_ID   shift, and go to state 1
+    T_NUM  shift, and go to state 2
+    T_SUB  shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 9
+    term  go to state 6
+    fact  go to state 7
+
+
+State 5
+
+    0 $accept: expr . $end
+    1 expr: expr . T_ADD term
+
+    $end   shift, and go to state 10
+    T_ADD  shift, and go to state 11
+
+
+State 6
+
+    2 expr: term .
+    3 term: term . T_MUL fact
+
+    T_MUL  shift, and go to state 12
+
+    $default  reduce using rule 2 (expr)
+
+
+State 7
+
+    4 term: fact .
+
+    $default  reduce using rule 4 (term)
+
+
+State 8
+
+    8 fact: T_SUB fact .
+
+    $default  reduce using rule 8 (fact)
+
+
+State 9
+
+    1 expr: expr . T_ADD term
+    7 fact: '(' expr . ')'
+
+    T_ADD  shift, and go to state 11
+    ')'    shift, and go to state 13
+
+
+State 10
+
+    0 $accept: expr $end .
+
+    $default  accept
+
+
+State 11
+
+    1 expr: expr T_ADD . term
+
+    T_ID   shift, and go to state 1
+    T_NUM  shift, and go to state 2
+    T_SUB  shift, and go to state 3
+    '('    shift, and go to state 4
+
+    term  go to state 14
+    fact  go to state 7
+
+
+State 12
+
+    3 term: term T_MUL . fact
+
+    T_ID   shift, and go to state 1
+    T_NUM  shift, and go to state 2
+    T_SUB  shift, and go to state 3
+    '('    shift, and go to state 4
+
+    fact  go to state 15
+
+
+State 13
+
+    7 fact: '(' expr ')' .
+
+    $default  reduce using rule 7 (fact)
+
+
+State 14
+
+    1 expr: expr T_ADD term .
+    3 term: term . T_MUL fact
+
+    T_MUL  shift, and go to state 12
+
+    $default  reduce using rule 1 (expr)
+
+
+State 15
+
+    3 term: term T_MUL fact .
+
+    $default  reduce using rule 3 (term)
